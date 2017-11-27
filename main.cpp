@@ -1,23 +1,25 @@
 #include <cstdlib>
 #include <iostream>
-#include <string>
 #include <time.h>
 #define NUMBERS_ANIMALS 100  //variable animals in Zoo
+#define SELECTONE 1
+#define SELECTTWO 2
+#define SELECTTHRE 3
+#define SELECTFOUR 4
+
 
 const int ADMIN_PASS = 1000; //variable pass admin Lvl, manager  lvl any value
 
 using namespace std;
 
-
 class Animal {
 private :
    int age;         // variables age of animal;
-   string kind;     // variables type animal;
-   string name;     // variables name animal;
+   char* kind;     // variables type animal;
+   char* name;     // variables name animal;
    int pawsNum;     // variables number of paws animal;
    int health;      // variables % health animal;
    bool isLeave;    // variables type of Leave (Zoo/aviary);
-
 public:
     Animal(){
         age = 0;
@@ -25,7 +27,7 @@ public:
         isLeave = true;
         srand (time(NULL));
     }
-    Animal(const int age, string kind, string name, int pawsNum, int health, bool isLeave){
+    Animal(const int age, char* kind, char* name, int pawsNum, int health, bool isLeave){
         this->age = age;
         this->kind = kind;
         this->name = name;
@@ -37,11 +39,11 @@ public:
 void setAge (int yearsAnimal) {
         age = yearsAnimal;
 }
-void setKind(string typeKind)
+void setKind(char* typeKind)
 {
         kind = typeKind;
 }
-void setName (string nameAnimal) {
+void setName (char* nameAnimal) {
         name = nameAnimal;
 }
 void setpawsNum (int countNum) {
@@ -65,24 +67,28 @@ int getpawsNum() { return pawsNum; }
 int getHealth()  { health = rand() % 100; return health; }
 bool getisLeave() { return isLeave; }
 
-void inputDataAnimals()
-    {
+void inputDataAnimals() {
         cout<<"...Add new animal..."<<endl;
         cout<<"Input age animal : ";
         cin>>age;
         cout<<"Input type animal : ";
-        getline (cin, kind);
-        getline (cin, kind);
+        gets (kind);
+        gets (kind);
         cout<<"Input name animal : ";
-        getline (cin, name);
+        gets (name);
         cout<<"Input number of paws animal : ";
         cin>>pawsNum;
         cout<<"Input locating animal : "<<1;
         cout<<endl;
-    }
+}
 
-void showData()
-    {
+void showData() {
+	int age;
+	char* kind;
+	char* name;
+	int pawsNum;
+	int health;
+   	bool isLeave = true;
         cout << "                                   Animal info: " << endl;
         cout << "=========================================================================================================" << endl;
         cout << " Age animal: " << age;
@@ -92,43 +98,43 @@ void showData()
         cout << " Health of animal: " << health;
         cout << " Locating animal: " << isLeave<<endl;
         cout << endl;
-    }
+}	
 };
 
 class Zoo{
-    Animal m_animals[NUMBERS_ANIMALS];
-    int m_size;
+    Animal animals[NUMBERS_ANIMALS];
+    int size;
 public:
-
 void showAboutInfo();
-    Zoo() { m_size = 0; }
+    Zoo() { size = 0; }
     Animal getAnimal(int index);
+
 // adding new animal to Zoo
 void addNewAnimal(Animal a){
-    if (m_size >= NUMBERS_ANIMALS){
+    if (size >= NUMBERS_ANIMALS){
         cout << "Animal was not - No space!";
         return;
     }
-    m_animals[m_size] = a;
-    m_size++;
+    animals[size] = a;
+    size++;
     }
 // print all info about animal
 void print(){
-    for (int i = 0; i < m_size; i++){
-        m_animals[i].showData();
+    for (int i = 0; i < size; i++){
+        animals[i].showData();
     }
 }
 // select using animal  name in zoo
-void showPopulation(string name){
-    for (int i = 0; i < m_size; i++){
+void showPopulation(char* name){
+    for (int i = 0; i < size; i++){
      //   if (m_animals[i] != nullptr){  // not worked?????
-        if (m_animals[i].getName().compare(name) == 0 ){
-            cout << " Age animal : "<< m_animals[i].getAge();
-            cout << " Kind animal : "<< m_animals[i].getKind();
-            cout << " Name animal : "<< m_animals[i].getName();
-            cout << " Number of paws animal: "<< m_animals[i].getpawsNum();
-            cout << " Health of animal: "<< m_animals[i].getHealth();
-            cout << " Animal in zoo?: "<< m_animals[i].getisLeave()<<endl;
+        if (animals[i].getName().compare(name) == 0 ){
+            cout << " Age animal : "<< animals[i].getAge();
+            cout << " Kind animal : "<< animals[i].getKind();
+            cout << " Name animal : "<< animals[i].getName();
+            cout << " Number of paws animal: "<< animals[i].getpawsNum();
+            cout << " Health of animal: "<< animals[i].getHealth();
+            cout << " Animal in zoo?: "<< animals[i].getisLeave()<<endl;
             cout <<endl;
      // }
         }
@@ -138,41 +144,40 @@ void showPopulation(string name){
         }
 }
 // delete select animal from Zoo
-void deleteAnimal(string name){
-    for (int i = 0 ; i < m_size ; i++)
-            if (m_animals[i].getName().compare(name) == 0)  {
-               delete m_animals[i];
-               m_animals[i] = nullptr;
+void deleteAnimal(char* name){
+    for (int i = 0 ; i < size ; i++)
+            if (animals[i].getName().compare(name) == 0)  {
+				delete animals[i];
+           		animals[i] = nullptr;
                 cout<<">>>>>Animal was succesfully deleted<<<<<\n\n";
             } else {
                 cout << "Not found...\n\n";
             }
 }
 //edit select animal from Zoo
-void editAnimalInfo(string name){
+void editAnimalInfo(char* name){
    int age;
-   string kind;
-   string animalName;
+   char* kind;
+   char* animalName;
    int pawsNum;
    bool isLeave = true;
-    for (int i = 0 ; i < m_size ; i++)
-            if (m_animals[i].getName().compare(name) == 0)  {
+    for (int i = 0 ; i < size ; i++)
+            if (animals[i].getName().compare(name) == 0)  {
                 cout << "Enter new age animal: ";
                 cin >> age;
-                m_animals[i].setAge(age);
+                animals[i].setAge(age);
                 cout << "Enter new kind animal: ";
-                getline(cin, kind);
-                getline(cin, kind);                 //bugs of C++ incorrect input
-                m_animals[i].setKind(kind);
+                gets(kind);
+                animals[i].setKind(kind);
                 cout << "Enter new name animal: ";
-                getline(cin, animalName);
-                m_animals[i].setName(animalName);
+                gets(animalName);
+                animals[i].setName(animalName);
                 cout << "Enter new number of paws animal: ";
                 cin >> pawsNum;
-                m_animals[i].setpawsNum(pawsNum);
+                animals[i].setpawsNum(pawsNum);
                 cout << "Enter new validation isShown (1-yes / 0-no): ";
                 cin >>isLeave;
-                m_animals[i].getisLeave();
+                animals[i].getisLeave();
             } else {
                  cout << "Not found...\n\n";
             }
@@ -187,7 +192,7 @@ public:
     Zoo z;
 void userSelector(){
 int userSelector;
-string name;
+char* name;
         for(;;){
             std::cout<<"Welcome to User panel Zoo. Pls choose?"<<endl;
             std::cout<<"1 - Show about info"<<endl;
@@ -196,15 +201,14 @@ string name;
             std::cout<<"Choose select: ";
             cin>>userSelector;
             switch (userSelector){
-                case 1:
+                case SELECTONE:
                     std::cout<<"Show about info animal"<<endl;
                     anim.showData();
                     break;
-                case 2:
+                case SELECTTWO:
                     std::cout<<"Edit property animal"<<endl;
                     cin>>name;
-                    getline(cin, name);
-                    getline(cin, name);
+                    gets(name);
                     z.editAnimalInfo(name);
                     break;
                 default:
@@ -221,7 +225,7 @@ Zoo z;
 
 void adminSelector(){
 int adminSelector;
-string nameAnimal;
+char* nameAnimal;
         for(;;){
             cout <<"Welcome to Admin panel Zoo. Pls choose?"<<endl;
             cout <<"1 - Add new animal "<<endl;
@@ -232,26 +236,25 @@ string nameAnimal;
             cout <<"Choose select: ";
             cin >>adminSelector;
             switch (adminSelector){
-                case 1:
+                case SELECTONE:
                     cout<<"Add new animal into Zoo"<<endl;
                     anim.inputDataAnimals();
                     z.addNewAnimal(anim);
                     break;
-                case 2:
+                case SELECTTWO:
                     cout<<"Delete animal into Zoo"<<endl;
-                    getline (cin, nameAnimal);
+                    gets (nameAnimal);
                     z.deleteAnimal(nameAnimal);
                     break;
-                case 3:
+                case SELECTTHRE:
                     cout<<"Show population animal"<<endl;
-                    getline (cin, nameAnimal);
-                   // getline (cin, nameAnimal);
+                    gets (nameAnimal);
                     z.showPopulation(nameAnimal);
                     break;
-                case 4:
+                case SELECTFOUR:
                     std::cout<<"Edit property animal"<<endl;
                     cin>>nameAnimal;
-                    getline(cin, nameAnimal);
+                    gets(nameAnimal);
                     z.editAnimalInfo(nameAnimal);
                     break;
                 default:
